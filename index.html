@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pokedex</title>
+    <title>Jogo dos Botões</title>
 
     <style>
       h1 {
@@ -16,9 +16,14 @@
         border-collapse: collapse;
       }
       button {
-        width: 60px;
+        width: 70px;
         background-color: white;
         color: black;
+        border-radius: 20px;
+        margin: 5px;
+      }
+      #opcoes{
+        margin: 10px;
       }
     </style>
   </head>
@@ -26,7 +31,16 @@
     <h1>Jogo dos Botões</h1>
     <center>
       <table id="tabela"></table>
-      <button id="botao">Iniciar Jogo</button>
+      <div id="opcoes">
+        <button id="botao">Iniciar Jogo</button>
+      </div>
+      <div id="instrucoes">
+        <h2>Instruções</h2>
+        <p>O objetivo do jogo é pintar todos os botões de preto para passar de nível</p>
+        <p>Para isso, clique em um botão e ele mesmo e todos os botões ao redor dele mudarão de cor</p>
+        <p>Se um botão estiver preto ele mudará para branco e vice-versa</p>
+        <p>Até onde você consegue ir?</p>
+      </div>
     </center>
 
     <script>
@@ -79,6 +93,18 @@
         }
       }
 
+      function resetaNivel(nivel) {
+        for (let i = 1; i <= nivel * nivel; i++) {
+          var botao = document.getElementById(i);
+          if (botao.style.backgroundColor == "black") {
+            botao.style.backgroundColor = "white";
+            botao.style.color = "black";
+            contador--;
+          }
+        }
+        btn.setAttribute("disabled", "");
+      }
+
       function mudaCor(id) {
         var botao = document.getElementById(id);
         if (botao.style.backgroundColor == "black") {
@@ -92,23 +118,29 @@
         }
       }
 
-      var c = 2;
+      var c = 1;
       var contador = 0;
       const btn = document.getElementById("botao");
       btn.addEventListener("click", () => {
-        if (c == 2) {
+        if (c == 1) {
           var botao = document.getElementById("botao");
           botao.innerHTML = "Próximo Nível";
           btn.setAttribute("disabled", "");
+          var t = document.createElement("button");
+          t.innerHTML = "Reiniciar Nível";
+          t.addEventListener("click", () => {
+            resetaNivel(c);
+          });
+          document.getElementById("opcoes").appendChild(t);
         }
-        if (c > 2) {
+        if (c > 1) {
           var tabela = document.getElementById("tabela");
           tabela.innerHTML = "";
           btn.setAttribute("disabled", "");
-          contador=0;
+          contador = 0;
         }
+        c+=1;
         criaNivel(c);
-        c += 1;
       });
     </script>
   </body>
