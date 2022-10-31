@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex</title>
+
+    <style>
+      h1 {
+        text-align: center;
+        color: red;
+      }
+      table {
+        margin: auto;
+        border-collapse: collapse;
+      }
+      button {
+        width: 60px;
+        background-color: white;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Jogo dos Botões</h1>
+    <center>
+      <table id="tabela"></table>
+      <button id="botao">Iniciar Jogo</button>
+    </center>
+
+    <script>
+      function criaNivel(nivel) {
+        var h = nivel;
+        var cont = h * h;
+        var tabela = document.getElementById("tabela");
+        for (let i = 0; i < h; i++) {
+          var linha = tabela.insertRow(0);
+          for (let j = 0; j < h; j++) {
+            var celula1 = linha.insertCell(0);
+            celula1.innerHTML = "<button id=" + cont + ">" + cont + "</button>";
+            var btn = document.getElementById(cont);
+            btn.addEventListener("click", function () {
+              verificaBotoes(nivel, parseInt(this.id));
+            });
+            cont -= 1;
+          }
+        }
+      }
+
+      function verificaBotoes(nivel, botao) {
+        var esq = botao - 1;
+        var dir = botao + 1;
+        var cima = botao - nivel;
+        var baixo = botao + nivel;
+        mudaCor(botao);
+
+        if (esq % nivel != 0) {
+          mudaCor(botao - 1);
+        }
+
+        if (dir % nivel != 1) {
+          mudaCor(botao + 1);
+        }
+
+        if (cima > 0) {
+          mudaCor(botao - nivel);
+        }
+
+        if (baixo <= nivel * nivel) {
+          mudaCor(botao + nivel);
+        }
+
+        var botao = document.getElementById("botao");
+        if (contador == nivel * nivel) {
+          btn.removeAttribute("disabled");
+        } else {
+          btn.setAttribute("disabled", "");
+        }
+      }
+
+      function mudaCor(id) {
+        var botao = document.getElementById(id);
+        if (botao.style.backgroundColor == "black") {
+          botao.style.backgroundColor = "white";
+          botao.style.color = "black";
+          contador--;
+        } else {
+          botao.style.backgroundColor = "black";
+          botao.style.color = "white";
+          contador++;
+        }
+      }
+
+      var c = 2;
+      var contador = 0;
+      const btn = document.getElementById("botao");
+      btn.addEventListener("click", () => {
+        if (c == 2) {
+          var botao = document.getElementById("botao");
+          botao.innerHTML = "Próximo Nível";
+          btn.setAttribute("disabled", "");
+        }
+        if (c > 2) {
+          var tabela = document.getElementById("tabela");
+          tabela.innerHTML = "";
+          btn.setAttribute("disabled", "");
+          contador=0;
+        }
+        criaNivel(c);
+        c += 1;
+      });
+    </script>
+  </body>
+</html>
